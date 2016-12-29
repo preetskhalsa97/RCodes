@@ -25,7 +25,7 @@ tapply(predictTrain,qTrain$poorCare,mean)
 
 #CONFUSION/ CLASSIFICATION TABLE
 tValue=0.5
-table(qTrain$poorCare,predictTrain>0.5)
+table(qTrain$poorCare,predictTrain>tValue)
 
 #GENERATING ROC CURVE
 install.packages("ROCR")
