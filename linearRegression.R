@@ -18,3 +18,6 @@ library(zoo)
 varLag2=lag(zoo(fluTrain$var),-2,na.pad=TRUE)
 fluTrain$varLag2=coredata(varLag2)
 
+#Correlation
+cor(wine$Rain,wine$Price)
+cor(wine) #gives all possible ccorrelations from the dataset
