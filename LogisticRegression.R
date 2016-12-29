@@ -37,7 +37,11 @@ ROCRpred=prediction(predictTrain,qTrain$poorCare)
 ROCRperf=performance(ROCRpred,"tpr","fpr") #True Positive Rate, False Positive Rate ==> labelling x and y axis
 plot(ROCRperf,colorize=TRUE,print.cuttoffs.at=seq(0,1,0.1), text.adj=c(-0.2,1.7)) #Marking on the RHS y- axiss shows the corresponding threshold value
 
-predictTest=predict(qLog,type="Response",newData=qTest)
+predictTest=predict(qLog,type="response",newData=qTest)
+
+#COMPUTING AUC================
+ROCRpredTest = prediction(predictTest, qTest$poorCare)
+auc = as.numeric(performance(ROCRpredTest, "auc")@y.values)
 
 
 
