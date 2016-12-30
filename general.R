@@ -25,6 +25,8 @@ summary(who)
 nrows(who)
 #names of COLUMNS
 names(who)
+#removing all rows with NA 
+who=na.omit(who)
 
 #subset
 whoAsia=subset(who,Region=="Asia")
