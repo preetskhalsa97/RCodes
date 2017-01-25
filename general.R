@@ -17,6 +17,17 @@ allCountryData=rbind(countryData,newCountryData)
 getwd()
 setwd("AnalyticsEdge/W01")
 who=read.csv("who.csv")
+
+#Reading from a text file, columns separated by "|"
+movies=read.table("movieLens.txt",header=FALSE,sep="|",quote="\"") #FALSE if file doesn't have names of the columns
+#Adding the names of the columns
+colnames(movies)=c("ID","Title","Release Date") 
+#Removing useless variables
+movies$ID=NULL
+
+#Removing duplicate entries
+movies=unique(movies)
+
 #structure
 str(who)
 #summary
