@@ -101,7 +101,31 @@ ibm$date=as.Date(ibm$date,"%m/%d/%y")
 #checking for NA==> can also be checked roughly through summary
 is.na(cps$married) #returns a vector ==> TRUE if NA, else FALSE
 
+#extracting date, time etc from a string
+# Load our data:
+mvt = read.csv("mvt.csv", stringsAsFactors=FALSE)
 
+str(mvt)
 
+# Convert the Date variable to a format that R will recognize:
+mvt$Date = strptime(mvt$Date, format="%m/%d/%y %H:%M")
 
+# Extract the hour and the day of the week:
+mvt$Weekday = weekdays(mvt$Date)
+mvt$Hour = mvt$Date$hour
+
+#converting Table to data frame
+# Create a simple line plot - need the total number of crimes on each day of the week. We can get this information by creating a table:
+table(mvt$Weekday)
+
+# Save this table as a data frame:
+WeekdayCounts = as.data.frame(table(mvt$Weekday))
+
+str(WeekdayCounts) 
+
+#segregating variables into types
+DayHourCounts$Type = ifelse((DayHourCounts$Var1 == "Sunday") | (DayHourCounts$Var1 == "Saturday"), "Weekend", "Weekday")
+
+#Merging to df
+murderMap = merge(statesMap, murders, by="region")
 

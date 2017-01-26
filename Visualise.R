@@ -25,7 +25,7 @@ dev.off()
 """
 Coloring points by region and plotting a regression line
 """
-ggplot(who,aes(x=GNI,y=FertilityRate,color=Region))+geom_point()
+ggplot(who,aes(x=GNI,y=FertilityRate,color=Region))+geom_point() +xlab("hfyhtgrfe") #x axis label
 #adding regression line to the plot 
 ggplot(who,aes(x=GNI,y=FertilityRate,color=Region))+geom_point() + stat_smooth(method=lm)
 #By default, ggplot will draw 95% confidence interval shaded around the line 
@@ -34,4 +34,14 @@ ggplot(who,aes(x=GNI,y=FertilityRate,color=Region))+geom_point() + stat_smooth(m
 ggplot(who,aes(x=GNI,y=FertilityRate,color=Region))+geom_point() + stat_smooth(method=lm, se=FALSE, color="red") #changing color of the regression line
 
 #we can roughly see the relation between x and y axis by x=GNI,y=log(FertilityRate)
+
+#changing the order of variables on the x axis
+# Create our plot
+ggplot(WeekdayCounts, aes(x=Var1, y=Freq)) + geom_line(aes(group=1))  
+
+# Make the "Var1" variable an ORDERED factor variable
+WeekdayCounts$Var1 = factor(WeekdayCounts$Var1, ordered=TRUE, levels=c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday","Saturday"))
+
+# Try again:
+ggplot(WeekdayCounts, aes(x=Var1, y=Freq)) + geom_line(aes(group=1))
 
