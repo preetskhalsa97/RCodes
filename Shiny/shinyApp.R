@@ -120,7 +120,7 @@ server=function(input,output){output$coolplot = renderPlot({
   plot(rnorm(input$priceInput[1]))
 })} 
 
-#filtering the relevant data and plotting it, remember to import dplyr 
+#filtering the relevant data and plotting it, remember to import dplyr <HISTOGRAM> 
 
 server=function(input,output){output$coolplot <- renderPlot({
   filtered <-
@@ -133,5 +133,128 @@ server=function(input,output){output$coolplot <- renderPlot({
   ggplot(filtered, aes(Alcohol_Content)) +
     geom_histogram()
 })
+
+#<TABLES>
+output$results <- renderTable({
+  filtered <-
+    bcl %>%
+    filter(Price >= input$priceInput[1],
+           Price <= input$priceInput[2],
+           Type == input$typeInput,
+           Country == input$countryInput
+    )
+  filtered
+})
+
+#Reactive Programming 
+"""
+x=5
+y=x+1
+x=10
+==> y=11, since y is readily responsive to x
+"""
+#creating and accessing reactive variables 
+
+#we can access random variables inside the server method by observe({ print(input$priceInput) }) ==> PRINTS IN THE CONSOLE 
+
+#We can make our own reactive variables using reactive({})
+
+priceDiff <- reactive({
+ diff(input$priceInput)
+})
+
+observe({ print(priceDiff()) }) #Using selff defined reactive variables
+
+#****************************************
+filtered <- reactive({
+  bcl %>%
+    filter(Price >= input$priceInput[1],
+           Price <= input$priceInput[2],
+           Type == input$typeInput,
+           Country == input$countryInput
+    )
+})
+  output$coolplot <- renderPlot({
+  ggplot(filtered(), aes(Alcohol_Content)) +
+    geom_histogram()
+})
+output$result <- renderTable({
+  filtered()
+})
+
+#UI Outputs==> Output used to render more UI==> Creating inputs dynamically==> can be used to populate choices 
+"""
+library(shiny)
+ui <- fluidPage(
+  numericInput("num", "Maximum slider value", 5),
+  uiOutput("slider")
+)
+
+server <- function(input, output) {
+  output$slider <- renderUI({
+    sliderInput("slider", "Slider", min = 0,
+                max = input$num, value = 0)
+  })
+}
+
+shinyApp(ui = ui, server = server)
+"""
+"""
+ANOTHER EXAMPLE_
+in UI
+uiOutput("countryOutput")
+in SERVER 
+output$countryOutput <- renderUI({
+  selectInput("countryInput", "Country",
+              sort(unique(bcl$Country)),
+              selected = "CANADA")
+})
+"""
+
+#To tackle the problem while loading-
+ filtered <- reactive({
+  if (is.null(input$countryInput)) {
+    return(NULL) #DOES NOT RETURN ERROR WHILE SERVER IS LOADING THE COUNTRIES
+  }    
+  
+  bcl %>%
+    filter(Price >= input$priceInput[1],
+           Price <= input$priceInput[2],
+           Type == input$typeInput,
+           Country == input$countryInput
+    )
+})
+
+output$coolplot <- renderPlot({
+  if (is.null(filtered())) {
+    return()
+  }
+  ggplot(filtered(), aes(Alcohol_Content)) +
+    geom_histogram()
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
